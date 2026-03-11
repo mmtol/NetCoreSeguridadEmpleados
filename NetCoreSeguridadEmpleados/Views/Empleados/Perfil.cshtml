@@ -1,0 +1,13 @@
+﻿@using System.Security.Claims
+
+<h1>Bienvenida/o @Context.User.Identity.Name</h1>
+<p>Oficio: @Context.User.FindFirst(ClaimTypes.Role).Value</p>
+<p>Salario: @Context.User.FindFirst("Salario").Value</p>
+<p>Departamento: @Context.User.FindFirstValue("Dept")</p>
+
+<h2>Claims</h2>
+@foreach(Claim claim in Context.User.Claims)
+{
+    <p>@claim.Type: <b>@claim.Value</b></p>
+}
+

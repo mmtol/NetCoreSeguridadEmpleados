@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NetCoreSeguridadEmpleados.Filter;
 using NetCoreSeguridadEmpleados.Models;
 using NetCoreSeguridadEmpleados.Repositories;
+using System.Security.Claims;
 
 namespace NetCoreSeguridadEmpleados.Controllers
 {
@@ -23,6 +25,22 @@ namespace NetCoreSeguridadEmpleados.Controllers
         {
             Empleado emp = await repo.FindEmpleadoAsync(idempleado);
             return View(emp);
+        }
+
+        [AutthorizeEmpleados]
+        public async Task<IActionResult> Perfil()
+        {
+            return View();
+        }
+
+        [AutthorizeEmpleados]
+        public async Task<IActionResult> Compis()
+        {
+            //recuperamos el claim del user validado
+            string dato = HttpContext.User.FindFirstValue("Dept");
+            int idDepartamento = int.Parse(dato);
+            List<Empleado> compis = await repo.GetEmpleadosDepartamentoAsync(idDepartamento);
+            return View(compis);
         }
     }
 }
