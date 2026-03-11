@@ -1,0 +1,12 @@
+﻿@model Empleado
+
+<a asp-controller="Empleados" asp-action="Index">Volver a la lista</a>
+
+<div>
+    <h2>Detalles del Empleado</h2>
+    <p><strong>Id:</strong> @Model.IdEmpleado</p>
+    <p><strong>Apellido:</strong> @Model.Apellido</p>
+    <p><strong>Oficio:</strong> @Model.Oficio</p>
+    <p><strong>Salario:</strong> @Model.Salario</p>
+    <p><strong>Departamento:</strong> @Model.IdDepartamento</p>
+</div>
