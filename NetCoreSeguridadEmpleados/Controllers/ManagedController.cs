@@ -62,6 +62,17 @@ namespace NetCoreSeguridadEmpleados.Controllers
                 string controller = TempData["controller"].ToString();
                 string action = TempData["action"].ToString();
 
+                if (TempData["id"] != null)
+                {
+                    string id = TempData["id"].ToString();
+                    return RedirectToAction(action, controller, new { id = id });
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "Credenciales incorrectas";
+                    return View();
+                }
+
                 //por ahora lo enviamos a una vista que haremos en breve
                 return RedirectToAction(action, controller);
             }

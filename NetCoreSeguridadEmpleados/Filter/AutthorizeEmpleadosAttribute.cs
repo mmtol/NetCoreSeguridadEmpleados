@@ -20,12 +20,25 @@ namespace NetCoreSeguridadEmpleados.Filter
             string controller = context.RouteData.Values["controller"].ToString();
             string action = context.RouteData.Values["action"].ToString();
 
+            var id = context.RouteData.Values["id"];
+
             ITempDataProvider provider = context.HttpContext.RequestServices.GetService<ITempDataProvider>();
             //esta clase contiene tempdata de nuestra app
             var temp = provider.LoadTempData(context.HttpContext);
             //almacenamos la info
             temp["controller"] = controller;
             temp["action"] = action;
+
+            if (id != null)
+            {
+                temp["id"] = id.ToString();
+            }
+            else
+            {
+                //eliminamos la clave para que no se quede entre peticiones
+                temp.Remove("id");
+            }
+
             //reasignamos el tempdata para nuestra app
             provider.SaveTempData(context.HttpContext, temp);
 
