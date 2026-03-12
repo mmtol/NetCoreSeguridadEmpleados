@@ -68,7 +68,12 @@ namespace NetCoreSeguridadEmpleados.Controllers
             return View();
         }
 
-
+        [AutthorizeEmpleados(Policy = "DELETE")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await repo.DeleteEmpleado(id);
+            return RedirectToAction("Index");
+        }
     }
 }
 

@@ -38,6 +38,7 @@ builder.Services.AddAuthorization
             options.AddPolicy("JEFES", policy => policy.RequireRole("PRESIDENTE", "DIRECTOR", "ANALISTA"));
             options.AddPolicy("ADMIN", policy => policy.RequireClaim("Admin"));
             options.AddPolicy("RICOS", policy => policy.Requirements.Add(new OverSalarioRequirement()));
+            options.AddPolicy("DELETE", policy => policy.Requirements.Add(new GetSubordinadosRequirement()));
         }
     );
 

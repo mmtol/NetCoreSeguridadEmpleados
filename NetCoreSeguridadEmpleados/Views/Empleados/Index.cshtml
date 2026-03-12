@@ -9,6 +9,7 @@
             <th>Salario</th>
             <th>Departamento</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,10 @@
                 <td>@empleado.IdDepartamento</td>
                 <td>
                     <a asp-controller="Empleados" asp-action="Details" asp-route-id="@empleado.IdEmpleado">Details</a>
+                </td>
+                <td>
+                    <a asp-controller="Empleados" asp-action="Delete" asp-route-id="@empleado.IdEmpleado">Delete</a>
+                </td>
             </tr>
         }
     </tbody>
