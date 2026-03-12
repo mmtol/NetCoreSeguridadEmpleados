@@ -33,7 +33,7 @@ namespace NetCoreSeguridadEmpleados.Controllers
             return View();
         }
 
-        [AutthorizeEmpleados]
+        [AutthorizeEmpleados(Policy = "JEFES")]
         public async Task<IActionResult> Compis()
         {
             //recuperamos el claim del user validado
@@ -42,6 +42,32 @@ namespace NetCoreSeguridadEmpleados.Controllers
             List<Empleado> compis = await repo.GetEmpleadosDepartamentoAsync(idDepartamento);
             return View(compis);
         }
+
+        [AutthorizeEmpleados(Policy = "JEFES")]
+        [HttpPost]
+        public async Task<IActionResult> Compis(int incremento)
+        {
+            //recuperamos el claim del user validado
+            string dato = HttpContext.User.FindFirstValue("Dept");
+            int idDepartamento = int.Parse(dato);
+            await repo.UpdateSalarioEmpleadoDeptAsync(idDepartamento, incremento);
+            List<Empleado> compis = await repo.GetEmpleadosDepartamentoAsync(idDepartamento);
+            return View(compis);
+        }
+
+        [AutthorizeEmpleados(Policy = "ADMIN")]
+        public async Task<IActionResult> AdminEmpleados()
+        {
+            return View();
+        }
+
+        [AutthorizeEmpleados(Policy = "RICOS")]
+        public async Task<IActionResult> ZonaNoble()
+        {
+            return View();
+        }
+
+
     }
 }
 

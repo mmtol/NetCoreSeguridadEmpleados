@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NetCoreSeguridadEmpleados.Data;
+using NetCoreSeguridadEmpleados.Policies;
 using NetCoreSeguridadEmpleados.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +16,29 @@ builder.Services.AddAuthentication
             options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         }
-    ).AddCookie();
+    ).AddCookie
+    (
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        config =>
+        {
+            config.AccessDeniedPath = "/Managed/ErrorAcceso";
+        }
+    );
 
 // Add services to the container.
 builder.Services.AddControllersWithViews
+    (options => options.EnableEndpointRouting = false).AddSessionStateTempDataProvider();
+
+//las politicas se agregan con authorization
+builder.Services.AddAuthorization
     (
-        options => options.EnableEndpointRouting = false
+        options =>
+        {
+            //debemos crear las policies que necesitemos para los roles
+            options.AddPolicy("JEFES", policy => policy.RequireRole("PRESIDENTE", "DIRECTOR", "ANALISTA"));
+            options.AddPolicy("ADMIN", policy => policy.RequireClaim("Admin"));
+            options.AddPolicy("RICOS", policy => policy.Requirements.Add(new OverSalarioRequirement()));
+        }
     );
 
 string conn = builder.Configuration.GetConnectionString("SqlConnection");
